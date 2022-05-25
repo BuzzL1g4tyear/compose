@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">compose</string>
-    <string name="cancel_Description">Cancel</string>
+    <string name="cancel_description">Cancel</string>
     <string name="name">First Name</string>
     <string name="department">Department</string>
+    <string name="add_description">Add</string>
 </resources>
