@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "580991120087",
+    "firebase_url": "https://compose5th-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "compose5th",
+    "storage_bucket": "compose5th.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580991120087:android:8cdd81395a7aabc9973692",
+        "android_client_info": {
+          "package_name": "com.example.compose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580991120087-spv8rr4lckomllnl76kmceo5keosm4co.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrrzpxTcT7UrUwSSShl3Mo3U0siroStt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580991120087-spv8rr4lckomllnl76kmceo5keosm4co.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
