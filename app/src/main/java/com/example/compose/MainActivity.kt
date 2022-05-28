@@ -5,22 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.compose.model.Person
 import com.example.compose.ui.theme.ComposeTheme
+import com.example.compose.utils.mobileNumberFilter
 
 class MainActivity : ComponentActivity() {
     private var mEmployee = Person("", "")
@@ -30,22 +29,20 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ComposeTheme {
-                Column {
-                    AddNewEmployee(employee = mEmployee)
-                }
+                AddNewEmployee(employee = mEmployee)
             }
         }
     }
 
     @Composable
     fun AddNewEmployee(employee: Person) {
+
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            InputName(employee, getString(R.string.name))
-            InputDepartment(employee, getString(R.string.department))
+            InputPhone(employee, getString(R.string.phone))
         }
         Row(
             Modifier
@@ -54,12 +51,12 @@ class MainActivity : ComponentActivity() {
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.End
         ) {
-            FloatingButton(employee = employee)
+            ButtonPress(employee = employee)
         }
     }
 
     @Composable
-    fun InputName(employee: Person, hint: String) {
+    fun InputPhone(employee: Person, hint: String) {
         var text by remember { mutableStateOf("") }
 
         OutlinedTextField(
@@ -71,31 +68,12 @@ class MainActivity : ComponentActivity() {
             label = {
                 Text(hint)
             },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = getString(R.string.cancel_description),
-                    modifier = Modifier
-                        .clickable {
-                            text = ""
-                        }
+            visualTransformation = { mobileNumberFilter(it) },
+            leadingIcon = {
+                Text(
+                    modifier = Modifier.padding(start = 5.dp, bottom = 2.dp),
+                    text = "+375", color = Color.Black,
                 )
-            }
-        )
-    }
-
-    @Composable
-    fun InputDepartment(employee: Person, hint: String) {
-        var text by remember { mutableStateOf("") }
-
-        OutlinedTextField(
-            value = text,
-            onValueChange = {
-                text = it
-                employee.Department = text
-            },
-            label = {
-                Text(hint)
             },
             trailingIcon = {
                 Icon(
@@ -111,7 +89,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun FloatingButton(employee: Person) {
+    fun ButtonPress(employee: Person) {
+
         FloatingActionButton(
             onClick = {
 
@@ -119,26 +98,9 @@ class MainActivity : ComponentActivity() {
         ) {
 
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = Icons.Default.Done,
                 contentDescription = getString(R.string.add_description)
             )
         }
-    }
-
-    @Composable
-    fun ShowAllEmployees(list: List<Person>) {
-        LazyColumn {
-            items(list) { employee ->
-                ShowText(employee = employee)
-            }
-        }
-    }
-
-    @Composable
-    fun ShowText(employee: Person) {
-        Text(
-            text = "${employee.Name}, ${employee.Department}",
-            fontSize = 16.sp
-        )
     }
 }
