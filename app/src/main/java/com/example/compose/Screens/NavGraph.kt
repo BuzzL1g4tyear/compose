@@ -21,5 +21,10 @@ fun SetupNavGraph(navController: NavHostController) {
         ) {
             InfoScreen()
         }
+        composable(
+            route = Screen.CreateNewEmployeeScreen.route
+        ) {
+            CreateNewEmployeeScreen(navController = navController)
+        }
     }
 }
