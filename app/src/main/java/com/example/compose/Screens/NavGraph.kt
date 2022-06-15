@@ -6,7 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun SetupNavGraph(
+    navController: NavHostController,
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.LoginScreen.route

@@ -8,7 +8,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.Screens.SetupNavGraph
 import com.example.compose.ui.theme.ComposeTheme
 import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.initDatabase
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
@@ -19,13 +24,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeTheme {
                 navController = rememberNavController()
-                SetupNavGraph(navController = navController)
-
+                SetupNavGraph(
+                    navController = navController,
+                )
             }
         }
     }
 
     private fun initFields() {
-        MAIN_ACT = this
+        MAIN_ACT = this@MainActivity
+        initDatabase()
     }
 }

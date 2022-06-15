@@ -1,25 +1,37 @@
 package com.example.compose.Screens
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import android.app.Application
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import com.example.compose.utils.INFO_SCREEN
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.compose.compose.PersonCard
+import com.example.compose.model.MainViewModel
+import com.example.compose.model.MainViewModelFactory
+import com.example.compose.model.Person
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 fun InfoScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = INFO_SCREEN,
-            fontSize = MaterialTheme.typography.h2.fontSize,
-            color = Color.Red
-        )
+
+    val context = LocalContext.current
+    val mViewModel: MainViewModel =
+        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
+    val persons = mViewModel.readText.observeAsState(listOf()).value
+
+    PersonInformation(persons = persons)
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Composable
+fun PersonInformation(persons: List<Person>) {
+    LazyColumn {
+
+        items(persons) { person ->
+            PersonCard(person = person)
+        }
     }
 }
