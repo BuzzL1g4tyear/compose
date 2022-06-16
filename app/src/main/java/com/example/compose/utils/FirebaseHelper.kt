@@ -3,7 +3,8 @@ package com.example.compose.utils
 import com.example.compose.model.Person
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 lateinit var AUTH: FirebaseAuth
 lateinit var UID: String
@@ -22,7 +23,7 @@ const val CHILD_STATUS = "Status"
 
 fun initDatabase() {
     AUTH = FirebaseAuth.getInstance()
-    REF_DATABASE = FirebaseDatabase.getInstance().reference
+    REF_DATABASE = Firebase.database.reference
     EMPLOYEE = Person()
     UID = AUTH.currentUser?.uid.toString()
 }

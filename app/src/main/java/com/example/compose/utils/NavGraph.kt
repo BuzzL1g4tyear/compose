@@ -4,10 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.compose.model.MainViewModel
 
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
+    mViewModel: MainViewModel
 ) {
     NavHost(
         navController = navController,
@@ -21,7 +23,10 @@ fun SetupNavGraph(
         composable(
             route = Screen.InfoScreen.route
         ) {
-            InfoScreen()
+            InfoScreen(
+                navController = navController,
+                viewModel = mViewModel
+            )
         }
         composable(
             route = Screen.CreateNewEmployeeScreen.route

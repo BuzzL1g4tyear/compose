@@ -50,22 +50,7 @@ fun CreateNewEmployeeScreen(navController: NavController) {
 
     val employee = Person()
 
-    fun addEmployee() {
-        AUTH.createUserWithEmailAndPassword(emailEmployee, passwordEmployee)
-            .addOnCompleteListener(MAIN_ACT) { task ->
-                if (task.isSuccessful) {
-                    val uId = AUTH.currentUser?.uid.toString()
-                    val dataMap = mutableMapOf<String, Any>()
-                    dataMap[CHILD_ID] = uId
-                    dataMap[CHILD_EMAIL] = emailEmployee
-                    dataMap[CHILD_PHONE] = phoneEmployee
-                    dataMap[CHILD_NAME] = nameEmployee
-                    dataMap[CHILD_DEPARTMENT] = depEmployee.value
-                    dataMap[CHILD_STATUS] = statusEmployee.value
-                    REF_DATABASE.child(NODE_USER).child(uId).updateChildren(dataMap)
-                }
-            }
-    }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -252,7 +237,7 @@ fun CreateNewEmployeeScreen(navController: NavController) {
         ) {
             FloatingActionButton(
                 onClick = {
-                    addEmployee()
+                    //todo click
                 }
             ) {
                 Image(painterResource(id = R.drawable.ic_person_add), contentDescription = "")
