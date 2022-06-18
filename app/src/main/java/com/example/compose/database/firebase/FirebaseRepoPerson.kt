@@ -1,18 +1,18 @@
 package com.example.compose.database.firebase
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.compose.database.DatabaseRepo
 import com.example.compose.model.Person
 import com.example.compose.utils.*
 import com.google.firebase.auth.FirebaseAuth
 
-class FirebaseRepo : DatabaseRepo {
+class FirebaseRepoPerson : DatabaseRepo {
 
     private val mAuth = FirebaseAuth.getInstance()
-    private val path = REF_DATABASE.child(NODE_USER)
+    private val pathToUser = REF_DATABASE.child(NODE_USER)
 
-    override val readAll: LiveData<List<Person>> = AllPersonsLiveData()
+    override val readAllPerson: LiveData<List<Person>> = AllPersonsLiveData()
+    override val readAllStatistics: LiveData<List<Person>> = AllStatisticLiveData()
 
     override suspend fun create(person: Person, onSuccess: () -> Unit) {
 
@@ -25,7 +25,7 @@ class FirebaseRepo : DatabaseRepo {
         hashMapPersons[CHILD_DEPARTMENT] = person.Department
         hashMapPersons[CHILD_STATUS] = person.Status
 
-        path.child(person.id).updateChildren(hashMapPersons)
+        pathToUser.child(person.Shop).child(person.Department).updateChildren(hashMapPersons)
             .addOnSuccessListener {
                 onSuccess()
             }

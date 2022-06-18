@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavController
 import com.example.compose.compose.PersonCard
-import com.example.compose.model.MainViewModel
+import com.example.compose.model.PersonViewModel
 import com.example.compose.model.Person
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
-fun InfoScreen(navController: NavController, viewModel: MainViewModel) {
+fun InfoScreen(navController: NavController, viewModel: PersonViewModel) {
 
     viewModel.initDB { }
 
@@ -25,7 +25,6 @@ fun InfoScreen(navController: NavController, viewModel: MainViewModel) {
 @Composable
 fun PersonInformation(persons: List<Person>) {
     LazyColumn {
-
         items(persons) { person ->
             PersonCard(person = person)
         }

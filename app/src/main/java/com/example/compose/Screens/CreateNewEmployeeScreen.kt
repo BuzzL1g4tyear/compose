@@ -12,14 +12,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.R
+import com.example.compose.compose.ShowSnackBar
 import com.example.compose.model.Person
-import com.example.compose.utils.*
+import com.example.compose.model.PersonViewModel
+import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.mobileNumberFilter
 
 val depItems = listOf(
     "IT/AV",
@@ -33,9 +35,10 @@ val statusItems = listOf(
     "Заведующий"
 )
 
-
 @Composable
-fun CreateNewEmployeeScreen(navController: NavController) {
+fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonViewModel) {
+
+    val coroutineScope = rememberCoroutineScope()
 
     var vis by remember { mutableStateOf(true) }
     val expanded = remember { mutableStateOf(false) }
@@ -43,14 +46,13 @@ fun CreateNewEmployeeScreen(navController: NavController) {
     val statusEmployee = remember { mutableStateOf(statusItems[0]) }
     val depEmployee = remember { mutableStateOf(depItems[0]) }
 
+    var shopEmployee by remember { mutableStateOf("Денисовская 8") }
     var emailEmployee by remember { mutableStateOf("") }
     var nameEmployee by remember { mutableStateOf("") }
     var phoneEmployee by remember { mutableStateOf("") }
     var passwordEmployee by remember { mutableStateOf("") }
 
-    val employee = Person()
-
-
+    val person = Person()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -65,7 +67,7 @@ fun CreateNewEmployeeScreen(navController: NavController) {
             value = emailEmployee,
             onValueChange = {
                 emailEmployee = it
-                employee.Email = emailEmployee
+                person.Email = emailEmployee
             },
             label = {
                 Text(MAIN_ACT.getString(R.string.email))
@@ -90,7 +92,7 @@ fun CreateNewEmployeeScreen(navController: NavController) {
             value = phoneEmployee,
             onValueChange = {
                 phoneEmployee = it
-                employee.Phone = phoneEmployee
+                person.Phone = phoneEmployee
             },
             label = {
                 Text(MAIN_ACT.getString(R.string.phone))
@@ -121,7 +123,7 @@ fun CreateNewEmployeeScreen(navController: NavController) {
             value = nameEmployee,
             onValueChange = {
                 nameEmployee = it
-                employee.Name = passwordEmployee
+                person.Name = passwordEmployee
             },
             label = {
                 Text(MAIN_ACT.getString(R.string.name))
@@ -146,7 +148,7 @@ fun CreateNewEmployeeScreen(navController: NavController) {
             value = passwordEmployee,
             onValueChange = {
                 passwordEmployee = it
-                employee.Phone = passwordEmployee
+                person.Phone = passwordEmployee
             },
             label = {
                 Text(MAIN_ACT.getString(R.string.password))
@@ -224,7 +226,6 @@ fun CreateNewEmployeeScreen(navController: NavController) {
                         }
                     }
                 }
-
             }
         }
 
@@ -235,13 +236,10 @@ fun CreateNewEmployeeScreen(navController: NavController) {
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.End
         ) {
-            FloatingActionButton(
-                onClick = {
-                    //todo click
-                }
-            ) {
-                Image(painterResource(id = R.drawable.ic_person_add), contentDescription = "")
-            }
+            ShowSnackBar(
+                person = person,
+                mViewModel = mViewModel
+            )
         }
     }
 }

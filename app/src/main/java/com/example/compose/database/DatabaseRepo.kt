@@ -5,7 +5,8 @@ import com.example.compose.model.Person
 
 interface DatabaseRepo {
 
-    val readAll: LiveData<List<Person>>
+    val readAllPerson: LiveData<List<Person>>
+    val readAllStatistics: LiveData<List<Person>>
 
     suspend fun create(person: Person, onSuccess: () -> Unit)
 

@@ -9,8 +9,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.Screens.SetupNavGraph
-import com.example.compose.model.MainViewModel
-import com.example.compose.model.MainViewModelFactory
+import com.example.compose.model.PersonViewModel
+import com.example.compose.model.PersonViewModelFactory
 import com.example.compose.ui.theme.ComposeTheme
 import com.example.compose.utils.MAIN_ACT
 import com.example.compose.utils.initDatabase
@@ -29,9 +29,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeTheme {
                 val context = LocalContext.current
-                val mViewModel: MainViewModel =
+                val mViewModel: PersonViewModel =
                     viewModel(
-                        factory = MainViewModelFactory(context.applicationContext as Application)
+                        factory = PersonViewModelFactory(context.applicationContext as Application)
                     )
                 navController = rememberNavController()
                 SetupNavGraph(

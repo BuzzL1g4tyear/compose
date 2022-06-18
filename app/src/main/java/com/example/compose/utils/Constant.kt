@@ -1,11 +1,10 @@
 package com.example.compose.utils
 
 import com.example.compose.MainActivity
-import com.example.compose.database.DatabaseRepo
-import com.example.compose.database.firebase.FirebaseRepo
+import com.example.compose.database.firebase.FirebaseRepoPerson
 
 lateinit var MAIN_ACT: MainActivity
-lateinit var REPO: FirebaseRepo
+lateinit var REPO: FirebaseRepoPerson
 
 const val SPLASH_SCREEN = "splash_screen"
 const val LOGIN_SCREEN = "login_screen"
