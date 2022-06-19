@@ -36,5 +36,10 @@ fun SetupNavGraph(
                 mViewModel = mViewModel
             )
         }
+        composable(
+            route = Screen.AddNewPhoneScreen.route
+        ) {
+            AddNewPhone()
+        }
     }
 }

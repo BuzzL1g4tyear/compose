@@ -1,10 +1,13 @@
 package com.example.compose.utils
 
+import android.provider.ContactsContract
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
+import com.example.compose.model.Person
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 fun mobileNumberFilter(text: AnnotatedString): TransformedText {
     val mask = "xx xxx xx xx"
@@ -43,4 +46,43 @@ fun mobileNumberFilter(text: AnnotatedString): TransformedText {
     }
 
     return TransformedText(annotatedString, phoneNumberOffsetTranslator)
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun initContacts() {
+    if (checkPermission(READ_CONT)) {
+        ARRAY_CONTACTS = arrayListOf()
+        val cursor = MAIN_ACT.contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null
+        )
+        cursor?.let {
+            while (it.moveToNext()) {
+                val fullName =
+                    it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))
+                val phone =
+                    it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                val newPhonePerson = Person()
+                newPhonePerson.Name = fullName
+                newPhonePerson.Phone = phone.replace(Regex("[\\s,-]"), "")
+                ARRAY_CONTACTS.add(newPhonePerson)
+
+            }
+        }
+        cursor?.close()
+        personPhoneNumbers(ARRAY_CONTACTS)
+    }
+}
+
+fun personPhoneNumbers(arrayCont: ArrayList<Person>): Array<String> {
+    val array: Array<String> = Array((arrayCont.size)) { arrayCont[1].toString() }
+    var i = 0
+    arrayCont.forEach { contact ->
+        array[i] = "${contact.Phone} (${contact.Name})"
+        i += 1
+    }
+    return array
 }

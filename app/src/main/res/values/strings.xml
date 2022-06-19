@@ -9,4 +9,5 @@
     <string name="add_description">Add</string>
     <string name="create_new_employee">Create account</string>
     <string name="was_created">was added</string>
+    <string name="add_new_user_phone">Add new user phone</string>
 </resources>

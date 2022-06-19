@@ -12,5 +12,6 @@ data class Person(
     var PersonName: String = "",
     var AmountOfDeals: String = "",
     var AmountItemsInDeal: String = "",
-    var TimeStamp: Any = ""
+    var TimeStamp: Any = "",
+    var StateButtonPhone: Boolean = false
 )

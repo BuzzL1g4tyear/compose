@@ -1,10 +1,14 @@
 package com.example.compose
 
 import android.app.Application
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -13,9 +17,14 @@ import com.example.compose.model.PersonViewModel
 import com.example.compose.model.PersonViewModelFactory
 import com.example.compose.ui.theme.ComposeTheme
 import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.READ_CONT
+import com.example.compose.utils.initContacts
 import com.example.compose.utils.initDatabase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
@@ -42,8 +51,31 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        CoroutineScope(Dispatchers.IO).launch {
+            initContacts()
+        }
+    }
+
     private fun initFields() {
         MAIN_ACT = this@MainActivity
         initDatabase()
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (ContextCompat.checkSelfPermission(
+                this,
+                READ_CONT
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("MyTag", "onRequestPermissionsResult: ok")
+        }
+    }
+
 }
