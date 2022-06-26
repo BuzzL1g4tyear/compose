@@ -6,6 +6,7 @@ import com.example.compose.model.Person
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 lateinit var ARRAY_CONTACTS: ArrayList<Person>
+
 @OptIn(ExperimentalCoroutinesApi::class)
 lateinit var MAIN_ACT: MainActivity
 lateinit var REPO: FirebaseRepoPerson

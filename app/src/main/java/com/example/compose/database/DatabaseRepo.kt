@@ -10,6 +10,8 @@ interface DatabaseRepo {
 
     suspend fun create(person: Person, onSuccess: () -> Unit)
 
+    suspend fun createPhoneN(person: Person, onSuccess: () -> Unit)
+
     suspend fun update(person: Person, onSuccess: () -> Unit)
 
     suspend fun delete(person: Person, onSuccess: () -> Unit)

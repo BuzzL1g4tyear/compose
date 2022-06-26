@@ -52,7 +52,6 @@ fun FuncMainScreen(employee: Person, navController: NavController) {
     }
 }
 
-
 @Composable
 fun CreateNewEmployee(navController: NavController) {
     Text(

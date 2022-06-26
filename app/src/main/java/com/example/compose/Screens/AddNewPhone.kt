@@ -14,23 +14,37 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import com.example.compose.compose.SelectableItem
+import com.example.compose.model.Person
+import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
-import com.example.compose.ui.theme.Dark_Amber
+import com.example.compose.ui.theme.Lite_Amber
+import com.example.compose.ui.theme.White
 import com.example.compose.utils.ARRAY_CONTACTS
+import com.example.compose.utils.personPhoneNumbers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun AddNewPhone() {
+fun AddNewPhone(mViewModel: PersonViewModel) {
 
+    mViewModel.initDB {}
+
+    var buttonState by remember {
+        mutableStateOf(false)
+    }
     val coroutineScope = rememberCoroutineScope()
-
+    val listOfNumber = remember {
+        mutableStateListOf<Person>()
+    }
+//fixme при первом входе lateinit property ARRAY_CONTACTS has not been initialized
     Scaffold() {
         Box(
 //            modifier =
@@ -41,7 +55,7 @@ fun AddNewPhone() {
                 contentPadding = PaddingValues(bottom = 60.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Dark_Amber)
+                    .background(Lite_Amber)
             ) {
 
                 ARRAY_CONTACTS.sortBy {
@@ -72,6 +86,10 @@ fun AddNewPhone() {
                                 onClick = {
                                     contact.StateButtonPhone = !contact.StateButtonPhone
                                     selectedState = contact.StateButtonPhone
+                                    when (contact.StateButtonPhone) {
+                                        true -> listOfNumber.add(contact)
+                                        false -> listOfNumber.remove(contact)
+                                    }
                                 }
                             )
                         }
@@ -99,6 +117,30 @@ fun AddNewPhone() {
                 )
             }
         }
+
+        buttonState = when (listOfNumber.isEmpty()) {
+            true -> false
+            false -> true
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(end = 16.dp, bottom = 16.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.End
+        ) {
+            ButtonToAdd(
+                onClick = {
+                    for (person in listOfNumber) {
+                        mViewModel.addPhonePerson(person = person) {}
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Amber),
+                shape = CircleShape,
+                enabled = buttonState
+            )
+        }
     }
 }
 
@@ -107,13 +149,21 @@ fun Header(char: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Amber)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Lite_Amber, Amber, Lite_Amber
+                    )
+                )
+            )
             .padding(
-                start = 4.dp,
+                start = 16.dp,
                 top = 2.dp,
                 bottom = 2.dp
             ),
-        text = char
+        text = char,
+        color = White
+
     )
 }
 
@@ -134,6 +184,30 @@ fun ScrollToUpButton(
             Icon(
                 imageVector = Icons.Default.KeyboardArrowUp,
                 contentDescription = "UP"
+            )
+        }
+    }
+}
+
+@Composable
+fun ButtonToAdd(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    colors: ButtonColors,
+    shape: RoundedCornerShape,
+    enabled: Boolean
+) {
+    Button(
+        enabled = enabled,
+        onClick = onClick,
+        modifier = modifier,
+        colors = colors,
+        shape = shape
+    ) {
+        Row(Modifier.padding(7.dp)) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add"
             )
         }
     }

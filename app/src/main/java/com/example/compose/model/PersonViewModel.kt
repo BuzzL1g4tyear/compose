@@ -26,13 +26,23 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun addPerson(person: Person, onSuccess: () -> Unit) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            REPO.create(person = person) {
-//                viewModelScope.launch(Dispatchers.Main) {
-//                    onSuccess()
-//                }
-//            }
-//        }
+        viewModelScope.launch(Dispatchers.IO) {
+            REPO.create(person = person) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+        onSuccess()
+    }
+    fun addPhonePerson(person: Person, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPO.createPhoneN(person = person) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
         onSuccess()
     }
 }

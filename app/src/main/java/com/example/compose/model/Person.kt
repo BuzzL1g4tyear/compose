@@ -4,6 +4,7 @@ data class Person(
     var id: String = "",
     var Shop: String = "",
     var Email: String = "",
+    var Password: String = "",
     var Phone: String = "",
     var Name: String = "",
     var Department: String = "",

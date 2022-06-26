@@ -12,6 +12,7 @@ lateinit var REF_DATABASE: DatabaseReference
 lateinit var EMPLOYEE: Person
 
 const val NODE_SHOP = "SHOP"
+const val NODE_PHONES = "PHONES"
 const val NODE_USER = "USER"
 const val NODE_STATISTIC = "STATISTIC"
 
@@ -32,4 +33,12 @@ fun initDatabase() {
     REF_DATABASE = Firebase.database.reference
     EMPLOYEE = Person()
     UID = AUTH.currentUser?.uid.toString()
+}
+
+inline fun initUser(crossinline function: () -> Unit) {
+    REF_DATABASE.child(NODE_USER).child(UID)
+        .addListenerForSingleValueEvent(AppValueEventListener {
+            EMPLOYEE = it.getValue(Person::class.java) ?: Person()
+            function()
+        })
 }

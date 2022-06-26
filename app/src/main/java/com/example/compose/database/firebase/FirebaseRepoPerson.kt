@@ -10,22 +10,48 @@ class FirebaseRepoPerson : DatabaseRepo {
 
     private val mAuth = FirebaseAuth.getInstance()
     private val pathToUser = REF_DATABASE.child(NODE_USER)
+    private val pathToPhones = REF_DATABASE.child(NODE_PHONES)
 
     override val readAllPerson: LiveData<List<Person>> = AllPersonsLiveData()
     override val readAllStatistics: LiveData<List<Person>> = AllStatisticLiveData()
 
+    // TODO проверять номер
     override suspend fun create(person: Person, onSuccess: () -> Unit) {
 
         val hashMapPersons = hashMapOf<String, Any>()
 
-        hashMapPersons[CHILD_ID] = person.id
-        hashMapPersons[CHILD_EMAIL] = person.Email
-        hashMapPersons[CHILD_PHONE] = person.Phone
-        hashMapPersons[CHILD_NAME] = person.Name
-        hashMapPersons[CHILD_DEPARTMENT] = person.Department
-        hashMapPersons[CHILD_STATUS] = person.Status
+        mAuth.createUserWithEmailAndPassword(person.Email, person.Password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    person.id = mAuth.currentUser?.uid.toString()
 
-        pathToUser.child(person.Shop).child(person.Department).updateChildren(hashMapPersons)
+                    hashMapPersons[CHILD_ID] = person.id
+                    hashMapPersons[CHILD_EMAIL] = person.Email
+                    hashMapPersons[CHILD_PHONE] = person.Phone
+                    hashMapPersons[CHILD_NAME] = person.Name
+                    hashMapPersons[CHILD_SHOP] = person.Shop
+                    hashMapPersons[CHILD_DEPARTMENT] = person.Department
+                    hashMapPersons[CHILD_STATUS] = person.Status
+
+                    pathToUser
+                        .child(person.Shop)
+                        .child(person.id)
+                        .updateChildren(hashMapPersons)
+                        .addOnSuccessListener {
+                            onSuccess()
+                        }
+                }
+            }
+    }
+
+    // TODO перед отпарвкой проверять на Совпадение номера в бд
+    override suspend fun createPhoneN(person: Person, onSuccess: () -> Unit) {
+
+        val hashMapPersons = hashMapOf<String, Any>()
+
+        hashMapPersons[CHILD_PHONE] = person.Phone
+
+        pathToPhones.child(person.Phone).updateChildren(hashMapPersons)
             .addOnSuccessListener {
                 onSuccess()
             }

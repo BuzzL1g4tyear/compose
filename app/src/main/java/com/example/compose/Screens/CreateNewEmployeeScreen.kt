@@ -26,8 +26,9 @@ import com.example.compose.utils.mobileNumberFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
+// TODO раздать права
 val depItems = listOf(
-    "IT/AV",
+    "IT AV",
     "MM",
     "МБТ",
     "КБТ"
@@ -41,6 +42,8 @@ val statusItems = listOf(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonViewModel) {
+
+    mViewModel.initDB { }
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -61,6 +64,8 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
     var passwordEmployee by remember { mutableStateOf("") }
 
     val person = Person()
+
+    //todo в условие проверки перед отправкой добавть магаз
 
     Scaffold(
         scaffoldState = scaffoldState
@@ -161,6 +166,34 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                     )
                 }
             )
+//shop
+            OutlinedTextField(
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text
+                ),
+                value = shopEmployee,
+                onValueChange = {
+                    shopEmployee = it
+                    person.Shop = shopEmployee
+                    isButtonEnabled = emailEmployee.isNotEmpty() && nameEmployee.isNotEmpty() &&
+                            phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
+                },
+                label = {
+                    Text(MAIN_ACT.getString(R.string.name))
+                },
+
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = MAIN_ACT.getString(R.string.cancel_description),
+                        modifier = Modifier
+                            .clickable {
+                                shopEmployee = ""
+                                isButtonEnabled = false
+                            }
+                    )
+                }
+            )
 // password
             OutlinedTextField(
                 keyboardOptions = KeyboardOptions(
@@ -169,6 +202,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 value = passwordEmployee,
                 onValueChange = {
                     passwordEmployee = it
+                    person.Password = passwordEmployee
                     isButtonEnabled = emailEmployee.isNotEmpty() && nameEmployee.isNotEmpty() &&
                             phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
                 },
@@ -210,13 +244,15 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                         expanded.value = false
                     }) {
                         statusItems.forEach {
-                            DropdownMenuItem(onClick = {
-                                statusEmployee.value = it
-                                expanded.value = false
-                                vis = it != "Заведующий"
-                                if (!vis) depEmployee.value = ""
+                            DropdownMenuItem(
+                                onClick = {
+                                    statusEmployee.value = it
+                                    expanded.value = false
 
-                            }) {
+                                    vis = it != "Заведующий"
+                                    if (!vis) depEmployee.value = depItems[0]
+
+                                }) {
                                 Text(text = it)
                             }
                         }
@@ -242,6 +278,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                                 DropdownMenuItem(onClick = {
                                     depEmployee.value = it
                                     expanded1.value = false
+
                                 }) {
                                     Text(text = it)
                                 }
@@ -258,6 +295,8 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.End
             ) {
+                person.Status = statusEmployee.value
+                person.Department = depEmployee.value
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Amber),
                     shape = CircleShape,

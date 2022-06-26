@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,10 +15,7 @@ import com.example.compose.Screens.SetupNavGraph
 import com.example.compose.model.PersonViewModel
 import com.example.compose.model.PersonViewModelFactory
 import com.example.compose.ui.theme.ComposeTheme
-import com.example.compose.utils.MAIN_ACT
-import com.example.compose.utils.READ_CONT
-import com.example.compose.utils.initContacts
-import com.example.compose.utils.initDatabase
+import com.example.compose.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +57,23 @@ class MainActivity : ComponentActivity() {
     private fun initFields() {
         MAIN_ACT = this@MainActivity
         initDatabase()
+        isAuthPerson {
+            Log.d("MyTag", "isAuthPerson Init: in")
+            Log.d("MyTag", AUTH.currentUser?.uid.toString())
+        }
+    }
+
+    private fun isAuthPerson(onSuccess: () -> Unit) {
+        if (AUTH.currentUser != null) {
+            initUser {
+                Log.d("MyTag", "isAuthPerson: true")
+                onSuccess()
+            }
+        } else if (AUTH.currentUser == null) {
+            Log.d("MyTag", "isAuthPerson: false")
+        } else {
+            Log.d("MyTag", "isAuthPerson: something happen")
+        }
     }
 
     override fun onRequestPermissionsResult(
