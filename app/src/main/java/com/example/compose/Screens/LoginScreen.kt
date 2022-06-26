@@ -1,12 +1,12 @@
 package com.example.compose.Screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,17 +14,35 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.model.Person
+import com.example.compose.model.PersonViewModel
+import com.example.compose.utils.EMPLOYEE
 import com.example.compose.utils.MAIN_ACT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-var mEmployee = Person("", "")
-
 @Composable
-fun LoginScreen(navController: NavController) {
-    FuncMainScreen(
-        employee = mEmployee,
-        navController = navController
-    )
+fun LoginScreen(navController: NavController, mViewModel: PersonViewModel) {
+
+    Scaffold(
+        topBar = {
+            TopAppBar {
+                Spacer(
+                    Modifier.weight(1f)
+                )
+                IconButton(onClick = {
+                    mViewModel.singOut {
+                        Log.d("MyTag", "exit")
+                    }
+                }) {
+                    Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
+                }
+            }
+        }
+    ) {
+        FuncMainScreen(
+            employee = EMPLOYEE,
+            navController = navController
+        )
+    }
 }
 
 @Composable

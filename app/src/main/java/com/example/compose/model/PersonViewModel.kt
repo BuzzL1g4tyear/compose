@@ -1,7 +1,6 @@
 package com.example.compose.model
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +34,7 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
         }
         onSuccess()
     }
+
     fun addPhonePerson(person: Person, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             REPO.createPhoneN(person = person) {
@@ -43,6 +43,11 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
                 }
             }
         }
+        onSuccess()
+    }
+
+    fun singOut(onSuccess: () -> Unit) {
+        REPO.singOut()
         onSuccess()
     }
 }

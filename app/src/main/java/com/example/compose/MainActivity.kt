@@ -56,7 +56,9 @@ class MainActivity : ComponentActivity() {
 
     private fun initFields() {
         MAIN_ACT = this@MainActivity
+        val mPersonViewModel = PersonViewModel(application)
         initDatabase()
+        mPersonViewModel.initDB { }
         isAuthPerson {
             Log.d("MyTag", "isAuthPerson Init: in")
             Log.d("MyTag", AUTH.currentUser?.uid.toString())

@@ -11,11 +11,9 @@ import com.example.compose.model.Person
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
-fun InfoScreen(navController: NavController, viewModel: PersonViewModel) {
+fun InfoScreen(navController: NavController, mViewModel: PersonViewModel) {
 
-    viewModel.initDB { }
-
-    val persons = viewModel.readAll().observeAsState(listOf()).value
+    val persons = mViewModel.readAll().observeAsState(listOf()).value
 
     PersonInformation(persons = persons)
 

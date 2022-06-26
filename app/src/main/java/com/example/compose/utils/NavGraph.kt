@@ -18,14 +18,17 @@ fun SetupNavGraph(
         composable(
             route = Screen.LoginScreen.route
         ) {
-            LoginScreen(navController = navController)
+            LoginScreen(
+                navController = navController,
+                mViewModel = mViewModel
+            )
         }
         composable(
             route = Screen.InfoScreen.route
         ) {
             InfoScreen(
                 navController = navController,
-                viewModel = mViewModel
+                mViewModel = mViewModel
             )
         }
         composable(

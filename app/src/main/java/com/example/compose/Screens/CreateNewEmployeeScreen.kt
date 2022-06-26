@@ -43,8 +43,6 @@ val statusItems = listOf(
 @Composable
 fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonViewModel) {
 
-    mViewModel.initDB { }
-
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     var isButtonEnabled by remember {

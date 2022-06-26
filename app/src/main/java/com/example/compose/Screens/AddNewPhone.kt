@@ -35,8 +35,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddNewPhone(mViewModel: PersonViewModel) {
 
-    mViewModel.initDB {}
-
     var buttonState by remember {
         mutableStateOf(false)
     }
