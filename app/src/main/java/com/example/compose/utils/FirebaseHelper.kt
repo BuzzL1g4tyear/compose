@@ -36,7 +36,7 @@ fun initDatabase() {
 }
 
 inline fun initUser(crossinline function: () -> Unit) {
-    REF_DATABASE.child(NODE_USER).child(UID)
+    REF_DATABASE.child(NODE_SHOP).child(UID)
         .addListenerForSingleValueEvent(AppValueEventListener {
             EMPLOYEE = it.getValue(Person::class.java) ?: Person()
             function()

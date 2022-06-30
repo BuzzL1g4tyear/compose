@@ -62,6 +62,8 @@ class MainActivity : ComponentActivity() {
         isAuthPerson {
             Log.d("MyTag", "isAuthPerson Init: in")
             Log.d("MyTag", AUTH.currentUser?.uid.toString())
+            Log.d("MyTag", EMPLOYEE.id)
+            Log.d("MyTag", EMPLOYEE.Shop)
         }
     }
 

@@ -10,6 +10,7 @@ class FirebaseRepoPerson : DatabaseRepo {
 
     private val mAuth = FirebaseAuth.getInstance()
     private val pathToUser = REF_DATABASE.child(NODE_USER)
+    private val pathToShop = REF_DATABASE.child(NODE_SHOP)
     private val pathToPhones = REF_DATABASE.child(NODE_PHONES)
 
     override val readAllPerson: LiveData<List<Person>> = AllPersonsLiveData()
@@ -18,25 +19,33 @@ class FirebaseRepoPerson : DatabaseRepo {
     // TODO проверять номер
     override suspend fun create(person: Person, onSuccess: () -> Unit) {
 
-        val hashMapPersons = hashMapOf<String, Any>()
-
         mAuth.createUserWithEmailAndPassword(person.Email, person.Password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     person.id = mAuth.currentUser?.uid.toString()
 
-                    hashMapPersons[CHILD_ID] = person.id
-                    hashMapPersons[CHILD_EMAIL] = person.Email
-                    hashMapPersons[CHILD_PHONE] = person.Phone
-                    hashMapPersons[CHILD_NAME] = person.Name
-                    hashMapPersons[CHILD_SHOP] = person.Shop
-                    hashMapPersons[CHILD_DEPARTMENT] = person.Department
-                    hashMapPersons[CHILD_STATUS] = person.Status
+                    val hashMapPerson = hashMapOf<String, Any>()
+                    val hashMapShop = hashMapOf<String, Any>()
+
+                    hashMapPerson[CHILD_ID] = person.id
+                    hashMapPerson[CHILD_EMAIL] = person.Email
+                    hashMapPerson[CHILD_PHONE] = person.Phone
+                    hashMapPerson[CHILD_NAME] = person.Name
+                    hashMapPerson[CHILD_SHOP] = person.Shop
+                    hashMapPerson[CHILD_DEPARTMENT] = person.Department
+                    hashMapPerson[CHILD_STATUS] = person.Status
+
+                    hashMapShop[CHILD_ID] = person.id
+                    hashMapShop[CHILD_SHOP] = person.Shop
+
+                    pathToShop
+                        .child(person.id)
+                        .updateChildren(hashMapShop)
 
                     pathToUser
                         .child(person.Shop)
                         .child(person.id)
-                        .updateChildren(hashMapPersons)
+                        .updateChildren(hashMapPerson)
                         .addOnSuccessListener {
                             onSuccess()
                         }
