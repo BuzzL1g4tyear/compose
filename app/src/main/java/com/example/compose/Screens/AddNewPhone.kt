@@ -42,7 +42,7 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
     val listOfNumber = remember {
         mutableStateListOf<Person>()
     }
-//fixme при первом входе lateinit property ARRAY_CONTACTS has not been initialized
+
     Scaffold() {
         Box(
 //            modifier =

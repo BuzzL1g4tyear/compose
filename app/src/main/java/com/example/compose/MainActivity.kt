@@ -49,8 +49,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        checkPermission(READ_CONT)
+        PERMISSION = checkPermission(READ_CONT)
         CoroutineScope(Dispatchers.IO).launch {
-            initContacts()
+
+            if (PERMISSION) {
+                initContacts()
+            }
         }
     }
 

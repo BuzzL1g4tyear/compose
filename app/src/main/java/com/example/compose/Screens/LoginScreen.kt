@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,12 +18,20 @@ import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
 import com.example.compose.utils.EMPLOYEE
 import com.example.compose.utils.MAIN_ACT
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+lateinit var coroutineScope: CoroutineScope
+lateinit var scaffoldState: ScaffoldState
 
 @Composable
 fun LoginScreen(navController: NavController, mViewModel: PersonViewModel) {
 
+    coroutineScope = rememberCoroutineScope()
+    scaffoldState = rememberScaffoldState()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar {
                 Spacer(

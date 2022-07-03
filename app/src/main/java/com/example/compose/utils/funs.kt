@@ -50,7 +50,7 @@ fun mobileNumberFilter(text: AnnotatedString): TransformedText {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun initContacts() {
-    if (checkPermission(READ_CONT)) {
+    if (PERMISSION) {
         ARRAY_CONTACTS = arrayListOf()
         val cursor = MAIN_ACT.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
