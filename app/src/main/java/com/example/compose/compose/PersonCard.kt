@@ -44,14 +44,14 @@ fun PersonCard(
                     .fillMaxWidth(0.85f)
                     .wrapContentWidth(Alignment.Start),
                 color = Color.DarkGray,
-                fontSize = 25.sp
+                fontSize = 16.sp
             )
             Text(
                 text = person.Department,
                 modifier = Modifier
                     .wrapContentWidth(Alignment.End),
                 color = Color.DarkGray,
-                fontSize = 25.sp
+                fontSize = 16.sp
             )
         }
     }

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import com.example.compose.R
 import com.example.compose.compose.SelectableItem
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
@@ -28,13 +29,18 @@ import com.example.compose.ui.theme.Amber
 import com.example.compose.ui.theme.Lite_Amber
 import com.example.compose.ui.theme.White
 import com.example.compose.utils.ARRAY_CONTACTS
-import com.example.compose.utils.personPhoneNumbers
+import com.example.compose.utils.MAIN_ACT
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,
+    ExperimentalCoroutinesApi::class
+)
 @Composable
 fun AddNewPhone(mViewModel: PersonViewModel) {
 
+    val scaffoldState = rememberScaffoldState()
     var buttonState by remember {
         mutableStateOf(false)
     }
@@ -43,7 +49,9 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
         mutableStateListOf<Person>()
     }
 
-    Scaffold() {
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) {
         Box(
 //            modifier =
         ) {
@@ -55,42 +63,55 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
                     .fillMaxWidth()
                     .background(Lite_Amber)
             ) {
-
-                ARRAY_CONTACTS.sortBy {
-                    it.Name
-                }
-
-                val grouped = ARRAY_CONTACTS.groupBy {
-                    it.Name[0]
-                }
-
-                grouped.forEach { initial, contacts ->
-
-                    stickyHeader {
-                        Header(char = initial.toString())
+                if (ARRAY_CONTACTS.isNotEmpty()) {
+                    ARRAY_CONTACTS.sortBy {
+                        it.Name
                     }
-                    items(contacts) { contact ->
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = 12.dp)
 
-                        ) {
-                            var selectedState by remember { mutableStateOf(contact.StateButtonPhone) }
-                            SelectableItem(
-                                selected = selectedState,
-                                title = contact.Name,
-                                subTitle = contact.Phone,
-                                onClick = {
-                                    contact.StateButtonPhone = !contact.StateButtonPhone
-                                    selectedState = contact.StateButtonPhone
-                                    when (contact.StateButtonPhone) {
-                                        true -> listOfNumber.add(contact)
-                                        false -> listOfNumber.remove(contact)
-                                    }
-                                }
-                            )
+                    val grouped = ARRAY_CONTACTS.groupBy {
+                        it.Name[0]
+                    }
+
+                    grouped.forEach { initial, contacts ->
+
+                        stickyHeader {
+                            Header(char = initial.toString())
                         }
+                        items(contacts) { contact ->
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = 12.dp)
+
+                            ) {
+                                var selectedState by remember { mutableStateOf(contact.StateButtonPhone) }
+                                SelectableItem(
+                                    selected = selectedState,
+                                    title = contact.Name,
+                                    subTitle = contact.Phone,
+                                    onClick = {
+                                        contact.StateButtonPhone = !contact.StateButtonPhone
+                                        selectedState = contact.StateButtonPhone
+                                        when (contact.StateButtonPhone) {
+                                            true -> listOfNumber.add(contact)
+                                            false -> listOfNumber.remove(contact)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                } else if (ARRAY_CONTACTS.isEmpty()) {
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = MAIN_ACT.getString(R.string.empty_contacts)
+                        )
+                    }
+                } else {
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = MAIN_ACT.getString(R.string.something_wrong)
+                        )
                     }
                 }
             }

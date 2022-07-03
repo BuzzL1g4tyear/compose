@@ -51,11 +51,9 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         checkPermission(READ_CONT)
         PERMISSION = checkPermission(READ_CONT)
-        CoroutineScope(Dispatchers.IO).launch {
 
-            if (PERMISSION) {
-                initContacts()
-            }
+        if (PERMISSION) {
+            initContacts()
         }
     }
 
@@ -99,5 +97,4 @@ class MainActivity : ComponentActivity() {
             Log.d("MyTag", "onRequestPermissionsResult: ok")
         }
     }
-
 }

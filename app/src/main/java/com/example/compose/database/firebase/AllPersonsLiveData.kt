@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener
 
 class AllPersonsLiveData : LiveData<List<Person>>() {
 
+
     val REF_USERS = REF_DATABASE.child(NODE_USER).child(EMPLOYEE.Shop).child(EMPLOYEE.id)
 
     private val listener = object : ValueEventListener {

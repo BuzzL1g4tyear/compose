@@ -5,7 +5,7 @@ import com.example.compose.database.firebase.FirebaseRepoPerson
 import com.example.compose.model.Person
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-lateinit var ARRAY_CONTACTS: ArrayList<Person>
+var ARRAY_CONTACTS = mutableListOf<Person>()
 var PERMISSION: Boolean = false
 
 @OptIn(ExperimentalCoroutinesApi::class)

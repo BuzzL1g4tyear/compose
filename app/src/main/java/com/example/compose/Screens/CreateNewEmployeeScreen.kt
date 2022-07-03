@@ -295,10 +295,12 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
             ) {
                 person.Status = statusEmployee.value
                 person.Department = depEmployee.value
+
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Amber),
                     shape = CircleShape,
                     onClick = {
+                        person.Phone = "+375${person.Phone}"
                         mViewModel.addPerson(person = person) {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(

@@ -1,5 +1,6 @@
 package com.example.compose.utils
 
+import android.util.Log
 import com.example.compose.model.Person
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -40,5 +41,8 @@ inline fun initUser(crossinline function: () -> Unit) {
         .addListenerForSingleValueEvent(AppValueEventListener {
             EMPLOYEE = it.getValue(Person::class.java) ?: Person()
             function()
+            Log.d("MyTag", "initUser: ${EMPLOYEE.Name}")
+            Log.d("MyTag", "initUser: ${EMPLOYEE.Department}")
+            Log.d("MyTag", "initUser: ${EMPLOYEE.Phone}")
         })
 }

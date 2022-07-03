@@ -1,5 +1,6 @@
 package com.example.compose.database.firebase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.compose.database.DatabaseRepo
 import com.example.compose.model.Person
@@ -17,7 +18,18 @@ class FirebaseRepoPerson : DatabaseRepo {
     override val readAllStatistics: LiveData<List<Person>> = AllStatisticLiveData()
 
     // TODO проверять номер
-    override suspend fun create(person: Person, onSuccess: () -> Unit) {
+    override suspend fun create(
+        person: Person,
+        onSuccess: () -> Unit
+    ) {
+
+        pathToPhones.child(person.Phone).addValueEventListener(
+            AppValueEventListener { task ->
+                if (task.exists()) {
+                    Log.d("MyTag", "create: exist")
+                } else Log.d("MyTag", "not exist")
+            }
+        )
 
         mAuth.createUserWithEmailAndPassword(person.Email, person.Password)
             .addOnCompleteListener { task ->
@@ -47,6 +59,7 @@ class FirebaseRepoPerson : DatabaseRepo {
                         .child(person.id)
                         .updateChildren(hashMapPerson)
                         .addOnSuccessListener {
+                            EMPLOYEE = person
                             onSuccess()
                         }
                 }
@@ -55,6 +68,13 @@ class FirebaseRepoPerson : DatabaseRepo {
 
     // TODO перед отпарвкой проверять на Совпадение номера в бд
     override suspend fun createPhoneN(person: Person, onSuccess: () -> Unit) {
+        pathToPhones.child(person.Phone).addValueEventListener(
+            AppValueEventListener { task ->
+                if (task.exists()) {
+                    Log.d("MyTag", "createPhone: exist")
+                } else Log.d("MyTag", "not exist")
+            }
+        )
 
         val hashMapPersons = hashMapOf<String, Any>()
 

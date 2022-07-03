@@ -77,7 +77,7 @@ fun initContacts() {
     }
 }
 
-fun personPhoneNumbers(arrayCont: ArrayList<Person>): Array<String> {
+fun personPhoneNumbers(arrayCont: MutableList<Person>): Array<String> {
     val array: Array<String> = Array((arrayCont.size)) { arrayCont[1].toString() }
     var i = 0
     arrayCont.forEach { contact ->
