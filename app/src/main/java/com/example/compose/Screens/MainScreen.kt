@@ -16,19 +16,17 @@ import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
+import com.example.compose.utils.AUTH
 import com.example.compose.utils.EMPLOYEE
 import com.example.compose.utils.MAIN_ACT
-import kotlinx.coroutines.CoroutineScope
+import com.example.compose.utils.initUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-lateinit var coroutineScope: CoroutineScope
-lateinit var scaffoldState: ScaffoldState
-
 @Composable
-fun LoginScreen(navController: NavController, mViewModel: PersonViewModel) {
+fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
 
-    coroutineScope = rememberCoroutineScope()
-    scaffoldState = rememberScaffoldState()
+    var coroutineScope = rememberCoroutineScope()
+    var scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -39,7 +37,7 @@ fun LoginScreen(navController: NavController, mViewModel: PersonViewModel) {
                 )
                 IconButton(onClick = {
                     mViewModel.singOut {
-                        Log.d("MyTag", "exit")
+                        navController.navigate(Screen.AuthScreen.route)
                     }
                 }) {
                     Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
@@ -63,6 +61,7 @@ fun FuncMainScreen(employee: Person, navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        isAuthPerson { }
         CreateNewEmployee(navController = navController)
         AddNewPhone(navController = navController)
     }
@@ -76,6 +75,19 @@ fun FuncMainScreen(employee: Person, navController: NavController) {
         ButtonPress(
             navController = navController
         )
+    }
+}
+
+private fun isAuthPerson(onSuccess: () -> Unit) {
+    if (AUTH.currentUser != null) {
+        initUser {
+            Log.d("MyTag", "isAuthPerson: true")
+            onSuccess()
+        }
+    } else if (AUTH.currentUser == null) {
+        Log.d("MyTag", "isAuthPerson: false")
+    } else {
+        Log.d("MyTag", "isAuthPerson: something happen")
     }
 }
 

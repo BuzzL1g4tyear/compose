@@ -1,5 +1,6 @@
 package com.example.compose.Screens
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
@@ -21,6 +23,7 @@ import com.example.compose.R
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
+import com.example.compose.utils.EXIST
 import com.example.compose.utils.MAIN_ACT
 import com.example.compose.utils.mobileNumberFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -63,10 +66,20 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
 
     val person = Person()
 
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     //todo в условие проверки перед отправкой добавть магаз
 
     Scaffold(
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar {
+                IconButton(onClick = {
+                    onBackPressedDispatcher?.onBackPressed()
+                }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Logout")
+                }
+            }
+        }
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -302,10 +315,18 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                     onClick = {
                         person.Phone = "+375${person.Phone}"
                         mViewModel.addPerson(person = person) {
-                            coroutineScope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar(
-                                    message = "${person.Name} ${MAIN_ACT.getString(R.string.was_created)}"
-                                )
+                            if (EXIST) {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar(
+                                        message = "${person.Name} ${MAIN_ACT.getString(R.string.was_created)}"
+                                    )
+                                }
+                            } else if (!EXIST) {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar(
+                                        message = "${person.Phone} ${MAIN_ACT.getString(R.string.not_added_yet)}"
+                                    )
+                                }
                             }
                         }
                     },

@@ -12,4 +12,7 @@
     <string name="add_new_user_phone">Add new user phone</string>
     <string name="empty_contacts">No one contact wasn\'t added</string>
     <string name="something_wrong">Something wrong (</string>
+    <string name="something_incorrectly">Something incorrectly</string>
+    <string name="already_have_acc">Already have account</string>
+    <string name="not_added_yet">Not added yet</string>
 </resources>

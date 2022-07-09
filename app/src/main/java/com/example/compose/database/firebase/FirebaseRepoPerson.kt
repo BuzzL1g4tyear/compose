@@ -26,44 +26,43 @@ class FirebaseRepoPerson : DatabaseRepo {
         pathToPhones.child(person.Phone).addValueEventListener(
             AppValueEventListener { task ->
                 if (task.exists()) {
-                    Log.d("MyTag", "create: exist")
-                } else Log.d("MyTag", "not exist")
+                    mAuth.createUserWithEmailAndPassword(person.Email, person.Password)
+                        .addOnCompleteListener { task1 ->
+                            if (task1.isSuccessful) {
+                                person.id = mAuth.currentUser?.uid.toString()
+
+                                val hashMapPerson = hashMapOf<String, Any>()
+                                val hashMapShop = hashMapOf<String, Any>()
+
+                                hashMapPerson[CHILD_ID] = person.id
+                                hashMapPerson[CHILD_EMAIL] = person.Email
+                                hashMapPerson[CHILD_PHONE] = person.Phone
+                                hashMapPerson[CHILD_NAME] = person.Name
+                                hashMapPerson[CHILD_SHOP] = person.Shop
+                                hashMapPerson[CHILD_DEPARTMENT] = person.Department
+                                hashMapPerson[CHILD_STATUS] = person.Status
+
+                                hashMapShop[CHILD_ID] = person.id
+                                hashMapShop[CHILD_SHOP] = person.Shop
+
+                                pathToShop
+                                    .child(person.id)
+                                    .updateChildren(hashMapShop)
+
+                                pathToUser
+                                    .child(person.Shop)
+                                    .child(person.id)
+                                    .updateChildren(hashMapPerson)
+                                    .addOnSuccessListener {
+                                        EMPLOYEE = person
+                                        EXIST = false
+                                        onSuccess()
+                                    }
+                            }
+                        }
+                } else EXIST = true
             }
         )
-
-        mAuth.createUserWithEmailAndPassword(person.Email, person.Password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    person.id = mAuth.currentUser?.uid.toString()
-
-                    val hashMapPerson = hashMapOf<String, Any>()
-                    val hashMapShop = hashMapOf<String, Any>()
-
-                    hashMapPerson[CHILD_ID] = person.id
-                    hashMapPerson[CHILD_EMAIL] = person.Email
-                    hashMapPerson[CHILD_PHONE] = person.Phone
-                    hashMapPerson[CHILD_NAME] = person.Name
-                    hashMapPerson[CHILD_SHOP] = person.Shop
-                    hashMapPerson[CHILD_DEPARTMENT] = person.Department
-                    hashMapPerson[CHILD_STATUS] = person.Status
-
-                    hashMapShop[CHILD_ID] = person.id
-                    hashMapShop[CHILD_SHOP] = person.Shop
-
-                    pathToShop
-                        .child(person.id)
-                        .updateChildren(hashMapShop)
-
-                    pathToUser
-                        .child(person.Shop)
-                        .child(person.id)
-                        .updateChildren(hashMapPerson)
-                        .addOnSuccessListener {
-                            EMPLOYEE = person
-                            onSuccess()
-                        }
-                }
-            }
     }
 
     // TODO перед отпарвкой проверять на Совпадение номера в бд

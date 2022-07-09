@@ -17,10 +17,7 @@ import com.example.compose.model.PersonViewModelFactory
 import com.example.compose.ui.theme.ComposeTheme
 import com.example.compose.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
@@ -62,25 +59,7 @@ class MainActivity : ComponentActivity() {
         val mPersonViewModel = PersonViewModel(application)
         initDatabase()
         mPersonViewModel.initDB { }
-        isAuthPerson {
-            Log.d("MyTag", "isAuthPerson Init: in")
-            Log.d("MyTag", AUTH.currentUser?.uid.toString())
-            Log.d("MyTag", EMPLOYEE.id)
-            Log.d("MyTag", EMPLOYEE.Shop)
-        }
-    }
 
-    private fun isAuthPerson(onSuccess: () -> Unit) {
-        if (AUTH.currentUser != null) {
-            initUser {
-                Log.d("MyTag", "isAuthPerson: true")
-                onSuccess()
-            }
-        } else if (AUTH.currentUser == null) {
-            Log.d("MyTag", "isAuthPerson: false")
-        } else {
-            Log.d("MyTag", "isAuthPerson: something happen")
-        }
     }
 
     override fun onRequestPermissionsResult(

@@ -7,12 +7,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 var ARRAY_CONTACTS = mutableListOf<Person>()
 var PERMISSION: Boolean = false
+var EXIST: Boolean = false
 
 @OptIn(ExperimentalCoroutinesApi::class)
 lateinit var MAIN_ACT: MainActivity
 lateinit var REPO: FirebaseRepoPerson
 
 const val SPLASH_SCREEN = "splash_screen"
+const val AUTH_SCREEN = "auth_screen"
 const val LOGIN_SCREEN = "login_screen"
 const val CREATE_NEW_EMPLOYEE_SCREEN = "create_new_employee_screen"
 const val INFO_SCREEN = "info_screen"
