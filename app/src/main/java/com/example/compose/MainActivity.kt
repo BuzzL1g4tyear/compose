@@ -46,20 +46,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        checkPermission(READ_CONT)
         PERMISSION = checkPermission(READ_CONT)
-
-        if (PERMISSION) {
-            initContacts()
-        }
     }
 
     private fun initFields() {
         MAIN_ACT = this@MainActivity
         val mPersonViewModel = PersonViewModel(application)
         initDatabase()
-        mPersonViewModel.initDB { }
-
+        mPersonViewModel.initDB {}
     }
 
     override fun onRequestPermissionsResult(
@@ -73,7 +67,8 @@ class MainActivity : ComponentActivity() {
                 READ_CONT
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("MyTag", "onRequestPermissionsResult: ok")
+            PERMISSION = true
+
         }
     }
 }

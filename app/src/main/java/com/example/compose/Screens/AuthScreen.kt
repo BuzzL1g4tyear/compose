@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.R
+import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
-import com.example.compose.utils.AUTH
-import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun AuthScreen(navController: NavController) {
+fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -35,8 +35,14 @@ fun AuthScreen(navController: NavController) {
     }
 
     Scaffold(
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                title = { Text(text = MAIN_ACT.getString(R.string.auth_scr)) }
+            )
+        }
     ) {
+
         Column {
             OutlinedTextField(
                 value = emailAuth,
@@ -57,7 +63,7 @@ fun AuthScreen(navController: NavController) {
                 }
             )
             Text(
-                text = MAIN_ACT.getString(R.string.already_have_acc),
+                text = MAIN_ACT.getString(R.string.no_account_yet),
                 Modifier.clickable {
                     navController.navigate(
                         route = Screen.CreateNewEmployeeScreen.route
@@ -77,7 +83,10 @@ fun AuthScreen(navController: NavController) {
                             emailAuth,
                             pasAuth
                         ).addOnSuccessListener {
-                            navController.navigate(route = Screen.MainScreen.route)
+                            isAuthPerson {
+                                UID = AUTH.currentUser?.uid.toString()
+                                navController.navigate(route = Screen.MainScreen.route)
+                            }
                         }.addOnFailureListener {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(

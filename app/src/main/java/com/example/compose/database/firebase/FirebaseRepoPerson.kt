@@ -17,7 +17,6 @@ class FirebaseRepoPerson : DatabaseRepo {
     override val readAllPerson: LiveData<List<Person>> = AllPersonsLiveData()
     override val readAllStatistics: LiveData<List<Person>> = AllStatisticLiveData()
 
-    // TODO проверять номер
     override suspend fun create(
         person: Person,
         onSuccess: () -> Unit
@@ -65,7 +64,6 @@ class FirebaseRepoPerson : DatabaseRepo {
         )
     }
 
-    // TODO перед отпарвкой проверять на Совпадение номера в бд
     override suspend fun createPhoneN(person: Person, onSuccess: () -> Unit) {
         pathToPhones.child(person.Phone).addValueEventListener(
             AppValueEventListener { task ->

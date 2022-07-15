@@ -12,13 +12,14 @@ const val REQ_CODE = 200
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun checkPermission(permission: String): Boolean {
-    return if (Build.VERSION.SDK_INT >= 23
+    return if (Build.VERSION.SDK_INT >= 25
         && ContextCompat.checkSelfPermission(
             MAIN_ACT,
             permission
         ) != PackageManager.PERMISSION_GRANTED
     ) {
         ActivityCompat.requestPermissions(MAIN_ACT, arrayOf(permission), REQ_CODE)
+
         false
     } else true
 }

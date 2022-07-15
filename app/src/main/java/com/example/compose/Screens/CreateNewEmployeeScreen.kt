@@ -72,13 +72,16 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar {
-                IconButton(onClick = {
-                    onBackPressedDispatcher?.onBackPressed()
-                }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Logout")
+            TopAppBar(
+                title = { Text(text = MAIN_ACT.getString(R.string.registration_scr)) },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onBackPressedDispatcher?.onBackPressed()
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Logout")
+                    }
                 }
-            }
+            )
         }
     ) {
         Column(

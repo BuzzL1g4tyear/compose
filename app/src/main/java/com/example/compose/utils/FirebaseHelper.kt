@@ -41,8 +41,18 @@ inline fun initUser(crossinline function: () -> Unit) {
         .addListenerForSingleValueEvent(AppValueEventListener {
             EMPLOYEE = it.getValue(Person::class.java) ?: Person()
             function()
-            Log.d("MyTag", "initUser: ${EMPLOYEE.Name}")
-            Log.d("MyTag", "initUser: ${EMPLOYEE.Department}")
-            Log.d("MyTag", "initUser: ${EMPLOYEE.Phone}")
         })
+}
+
+fun isAuthPerson(onSuccess: () -> Unit) {
+    if (AUTH.currentUser != null) {
+        initUser {
+            Log.d("MyTag", "isAuthPerson: true")
+            onSuccess()
+        }
+    } else if (AUTH.currentUser == null) {
+        Log.d("MyTag", "isAuthPerson: false")
+    } else {
+        Log.d("MyTag", "isAuthPerson: something happen")
+    }
 }

@@ -16,33 +16,31 @@ import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
-import com.example.compose.utils.AUTH
-import com.example.compose.utils.EMPLOYEE
-import com.example.compose.utils.MAIN_ACT
-import com.example.compose.utils.initUser
+import com.example.compose.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
 
     var coroutineScope = rememberCoroutineScope()
-    var scaffoldState = rememberScaffoldState()
+    val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar {
-                Spacer(
-                    Modifier.weight(1f)
-                )
-                IconButton(onClick = {
-                    mViewModel.singOut {
-                        navController.navigate(Screen.AuthScreen.route)
+            TopAppBar(
+                title = { Text(text = MAIN_ACT.getString(R.string.main_scr)) },
+                actions = {
+                    IconButton(onClick = {
+                        mViewModel.singOut {
+                            navController.navigate(Screen.AuthScreen.route)
+                        }
+                    }) {
+                        Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
                     }
-                }) {
-                    Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
                 }
-            }
+            )
         }
     ) {
         FuncMainScreen(
@@ -75,19 +73,6 @@ fun FuncMainScreen(employee: Person, navController: NavController) {
         ButtonPress(
             navController = navController
         )
-    }
-}
-
-private fun isAuthPerson(onSuccess: () -> Unit) {
-    if (AUTH.currentUser != null) {
-        initUser {
-            Log.d("MyTag", "isAuthPerson: true")
-            onSuccess()
-        }
-    } else if (AUTH.currentUser == null) {
-        Log.d("MyTag", "isAuthPerson: false")
-    } else {
-        Log.d("MyTag", "isAuthPerson: something happen")
     }
 }
 

@@ -13,6 +13,10 @@
     <string name="empty_contacts">No one contact wasn\'t added</string>
     <string name="something_wrong">Something wrong (</string>
     <string name="something_incorrectly">Something incorrectly</string>
-    <string name="already_have_acc">Already have account</string>
+    <string name="no_account_yet">No account yet</string>
     <string name="not_added_yet">Not added yet</string>
+    <string name="main_scr">Main screen</string>
+    <string name="registration_scr">Registration</string>
+    <string name="auth_scr">Authorization</string>
+    <string name="add_new_phone_scr">Add new phone</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.compose.utils
 
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -50,31 +51,30 @@ fun mobileNumberFilter(text: AnnotatedString): TransformedText {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun initContacts() {
-    if (PERMISSION) {
-        ARRAY_CONTACTS = arrayListOf()
-        val cursor = MAIN_ACT.contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            null
-        )
-        cursor?.let {
-            while (it.moveToNext()) {
-                val fullName =
-                    it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))
-                val phone =
-                    it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                val newPhonePerson = Person()
-                newPhonePerson.Name = fullName
-                newPhonePerson.Phone = phone.replace(Regex("[\\s,-]"), "")
-                ARRAY_CONTACTS.add(newPhonePerson)
-
-            }
+    LIST_CONTACTS = arrayListOf()
+    Log.d("MyTag", "${LIST_CONTACTS.size}")
+    val cursor = MAIN_ACT.contentResolver.query(
+        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+        null,
+        null,
+        null,
+        null
+    )
+    cursor?.let {
+        while (it.moveToNext()) {
+            val fullName =
+                it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))
+            val phone =
+                it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            val newPhonePerson = Person()
+            newPhonePerson.Name = fullName
+            newPhonePerson.Phone = phone.replace(Regex("[\\s,-]"), "")
+            LIST_CONTACTS.add(newPhonePerson)
         }
-        cursor?.close()
-        personPhoneNumbers(ARRAY_CONTACTS)
     }
+    cursor?.close()
+    Log.d("MyTag", "${LIST_CONTACTS.size}")
+    personPhoneNumbers(LIST_CONTACTS)
 }
 
 fun personPhoneNumbers(arrayCont: MutableList<Person>): Array<String> {
@@ -84,5 +84,6 @@ fun personPhoneNumbers(arrayCont: MutableList<Person>): Array<String> {
         array[i] = "${contact.Phone} (${contact.Name})"
         i += 1
     }
+    Log.d("MyTag", "${array.size}")
     return array
 }

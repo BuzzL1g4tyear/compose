@@ -5,7 +5,7 @@ import com.example.compose.database.firebase.FirebaseRepoPerson
 import com.example.compose.model.Person
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-var ARRAY_CONTACTS = mutableListOf<Person>()
+var LIST_CONTACTS = mutableListOf<Person>()
 var PERMISSION: Boolean = false
 var EXIST: Boolean = false
 

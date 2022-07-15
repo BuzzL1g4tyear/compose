@@ -1,5 +1,7 @@
 package com.example.compose.Screens
 
+import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
@@ -15,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,8 +31,10 @@ import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
 import com.example.compose.ui.theme.Lite_Amber
 import com.example.compose.ui.theme.White
-import com.example.compose.utils.ARRAY_CONTACTS
+import com.example.compose.utils.LIST_CONTACTS
 import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.PERMISSION
+import com.example.compose.utils.initContacts
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -40,6 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddNewPhone(mViewModel: PersonViewModel) {
 
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val scaffoldState = rememberScaffoldState()
     var buttonState by remember {
         mutableStateOf(false)
@@ -48,9 +54,26 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
     val listOfNumber = remember {
         mutableStateListOf<Person>()
     }
+    Log.d("MyTag", "PERMISSION: $PERMISSION")
+    if (PERMISSION) {
+        initContacts()
+        Log.d("MyTag", "PERMISSION11: $PERMISSION")
+    }
 
     Scaffold(
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                title = { Text(text = MAIN_ACT.getString(R.string.add_new_phone_scr)) },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onBackPressedDispatcher?.onBackPressed()
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Logout")
+                    }
+                }
+            )
+        }
     ) {
         Box(
 //            modifier =
@@ -63,12 +86,15 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
                     .fillMaxWidth()
                     .background(Lite_Amber)
             ) {
-                if (ARRAY_CONTACTS.isNotEmpty()) {
-                    ARRAY_CONTACTS.sortBy {
+                if (LIST_CONTACTS.isNotEmpty()) {
+
+                    LIST_CONTACTS.sortBy {
                         it.Name
                     }
 
-                    val grouped = ARRAY_CONTACTS.groupBy {
+                    LIST_CONTACTS.distinct()
+
+                    val grouped = LIST_CONTACTS.groupBy {
                         it.Name[0]
                     }
 
@@ -101,7 +127,7 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
                             }
                         }
                     }
-                } else if (ARRAY_CONTACTS.isEmpty()) {
+                } else if (LIST_CONTACTS.isEmpty()) {
                     coroutineScope.launch {
                         scaffoldState.snackbarHostState.showSnackbar(
                             message = MAIN_ACT.getString(R.string.empty_contacts)

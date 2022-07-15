@@ -25,7 +25,8 @@ fun SetupNavGraph(
             route = Screen.AuthScreen.route
         ) {
             AuthScreen(
-                navController = navController
+                navController = navController,
+                mViewModel = mViewModel
             )
         }
         composable(
