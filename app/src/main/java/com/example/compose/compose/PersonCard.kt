@@ -36,7 +36,7 @@ fun PersonCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 12.dp)
+                .padding(all = 14.dp)
         ) {
             Text(
                 text = person.Name,
@@ -44,14 +44,14 @@ fun PersonCard(
                     .fillMaxWidth(0.85f)
                     .wrapContentWidth(Alignment.Start),
                 color = Color.DarkGray,
-                fontSize = 16.sp
+                fontSize = 18.sp
             )
             Text(
                 text = person.Department,
                 modifier = Modifier
                     .wrapContentWidth(Alignment.End),
                 color = Color.DarkGray,
-                fontSize = 16.sp
+                fontSize = 18.sp
             )
         }
     }

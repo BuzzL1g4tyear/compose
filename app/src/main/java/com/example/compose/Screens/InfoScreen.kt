@@ -3,21 +3,14 @@ package com.example.compose.Screens
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavController
 import com.example.compose.compose.PersonCard
-import com.example.compose.model.PersonViewModel
 import com.example.compose.model.Person
+import com.example.compose.model.PersonViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
-fun InfoScreen(navController: NavController, mViewModel: PersonViewModel) {
-
-    val persons = mViewModel.readAll().observeAsState(listOf()).value
-
-    PersonInformation(persons = persons)
-
-}
+fun InfoScreen(navController: NavController, mViewModel: PersonViewModel) { }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable

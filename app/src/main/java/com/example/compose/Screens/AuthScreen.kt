@@ -15,7 +15,10 @@ import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
-import com.example.compose.utils.*
+import com.example.compose.utils.AUTH
+import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.UID
+import com.example.compose.utils.isAuthPerson
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -43,7 +46,12 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
         }
     ) {
 
-        Column {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
             OutlinedTextField(
                 value = emailAuth,
                 onValueChange = {

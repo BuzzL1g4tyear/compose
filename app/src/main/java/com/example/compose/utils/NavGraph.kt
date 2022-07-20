@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.compose.model.PersonViewModel
 import com.example.compose.utils.AUTH
+import com.example.compose.utils.isAuthPerson
 
 @Composable
 fun SetupNavGraph(
@@ -15,6 +16,7 @@ fun SetupNavGraph(
     NavHost(
         navController = navController,
         startDestination = if (AUTH.currentUser != null) {
+            isAuthPerson { }
             Screen.MainScreen.route
         } else {
             Screen.AuthScreen.route

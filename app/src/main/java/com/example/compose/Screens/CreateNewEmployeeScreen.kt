@@ -316,15 +316,14 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                     colors = ButtonDefaults.buttonColors(backgroundColor = Amber),
                     shape = CircleShape,
                     onClick = {
-                        person.Phone = "+375${person.Phone}"
                         mViewModel.addPerson(person = person) {
-                            if (EXIST) {
+                            if (!EXIST) {
                                 coroutineScope.launch {
                                     scaffoldState.snackbarHostState.showSnackbar(
                                         message = "${person.Name} ${MAIN_ACT.getString(R.string.was_created)}"
                                     )
                                 }
-                            } else if (!EXIST) {
+                            } else if (EXIST) {
                                 coroutineScope.launch {
                                     scaffoldState.snackbarHostState.showSnackbar(
                                         message = "${person.Phone} ${MAIN_ACT.getString(R.string.not_added_yet)}"

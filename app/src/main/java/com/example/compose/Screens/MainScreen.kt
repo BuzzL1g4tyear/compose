@@ -1,30 +1,42 @@
 package com.example.compose.Screens
 
-import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.compose.R
+import com.example.compose.compose.CircularProgressBar
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
-import com.example.compose.utils.*
+import com.example.compose.utils.IS_FINISH
+import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.isAuthPerson
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
 
+    val BOTTOM_ITEMS = MAIN_ACT.resources.getStringArray(R.array.items)
+    val BOTTOM_ICONS = listOf(Icons.Filled.Home, Icons.Filled.Person, Icons.Filled.Phone)
+
+    var selectedItem by remember { mutableStateOf(0) }
     var coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+
+    val persons = mViewModel.readAll().observeAsState(listOf()).value
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -41,76 +53,76 @@ fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
                     }
                 }
             )
+        },
+        bottomBar = {
+            BottomBar(navController = navController)
         }
     ) {
         FuncMainScreen(
-            employee = EMPLOYEE,
+            persons = persons,
             navController = navController
         )
     }
 }
 
 @Composable
-fun FuncMainScreen(employee: Person, navController: NavController) {
+fun FuncMainScreen(persons: List<Person>, navController: NavController) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column {
         isAuthPerson { }
-        CreateNewEmployee(navController = navController)
-        AddNewPhone(navController = navController)
-    }
-    Row(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.End
-    ) {
-        ButtonPress(
-            navController = navController
-        )
-    }
-}
-
-@Composable
-fun CreateNewEmployee(navController: NavController) {
-    Text(
-        text = MAIN_ACT.getString(R.string.create_new_employee),
-        modifier = Modifier
-            .padding(16.dp)
-            .clickable {
-                navController.navigate(route = Screen.CreateNewEmployeeScreen.route)
-            }
-    )
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun AddNewPhone(navController: NavController) {
-    Text(
-        text = MAIN_ACT.getString(R.string.add_new_user_phone),
-        modifier = Modifier.clickable {
-            navController.navigate(route = Screen.AddNewPhoneScreen.route)
+        PersonInformation(persons = persons)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            CircularProgressBar(!IS_FINISH)
         }
-    )
+    }
 }
 
 @Composable
-fun ButtonPress(navController: NavController) {
+fun BottomBar(navController: NavController) {
+    val screens = listOf(
+        Screen.MainScreen,
+        Screen.CreateNewEmployeeScreen,
+        Screen.AddNewPhoneScreen
+    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    BottomNavigation {
+        screens.forEach { screen ->
+            AddItem(
+                screen = screen,
+                currentDescription = currentDestination,
+                navController = navController
+            )
+        }
+    }
+}
 
-    FloatingActionButton(
+@Composable
+fun RowScope.AddItem(
+    screen: Screen,
+    currentDescription: NavDestination?,
+    navController: NavController
+) {
+    BottomNavigationItem(
+        label = {
+            Text(text = screen.title)
+        },
+        icon = {
+            Icon(imageVector = screen.icon, contentDescription = screen.title)
+        },
+        selected = currentDescription?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         onClick = {
-            navController.navigate(route = Screen.InfoScreen.route)
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
         }
-    ) {
-
-        Icon(
-            imageVector = Icons.Default.Done,
-            contentDescription = MAIN_ACT.getString(R.string.add_description)
-        )
-    }
+    )
 }

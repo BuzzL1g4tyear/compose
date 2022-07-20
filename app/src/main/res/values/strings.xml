@@ -19,4 +19,10 @@
     <string name="registration_scr">Registration</string>
     <string name="auth_scr">Authorization</string>
     <string name="add_new_phone_scr">Add new phone</string>
+
+    <string-array name="items">
+        <item>Home</item>
+        <item>New user</item>
+        <item>New phone</item>
+    </string-array>
 </resources>

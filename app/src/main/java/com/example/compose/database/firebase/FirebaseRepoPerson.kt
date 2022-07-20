@@ -22,6 +22,7 @@ class FirebaseRepoPerson : DatabaseRepo {
         onSuccess: () -> Unit
     ) {
 
+        person.Phone = "+375${person.Phone}"
         pathToPhones.child(person.Phone).addValueEventListener(
             AppValueEventListener { task ->
                 if (task.exists()) {
