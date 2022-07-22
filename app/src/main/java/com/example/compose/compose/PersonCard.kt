@@ -41,8 +41,16 @@ fun PersonCard(
             Text(
                 text = person.Name,
                 modifier = Modifier
-                    .fillMaxWidth(0.85f)
+                    .fillMaxWidth(0.20f)
                     .wrapContentWidth(Alignment.Start),
+                color = Color.DarkGray,
+                fontSize = 18.sp
+            )
+            Text(
+                text = "2",
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .wrapContentWidth(Alignment.CenterHorizontally),
                 color = Color.DarkGray,
                 fontSize = 18.sp
             )

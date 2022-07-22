@@ -1,6 +1,8 @@
 package com.example.compose.Screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
@@ -18,6 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.compose.R
 import com.example.compose.compose.CircularProgressBar
+import com.example.compose.compose.PersonCard
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
 import com.example.compose.utils.IS_FINISH
@@ -29,14 +32,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
 
-    val BOTTOM_ITEMS = MAIN_ACT.resources.getStringArray(R.array.items)
-    val BOTTOM_ICONS = listOf(Icons.Filled.Home, Icons.Filled.Person, Icons.Filled.Phone)
-
-    var selectedItem by remember { mutableStateOf(0) }
     var coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     val persons = mViewModel.readAll().observeAsState(listOf()).value
+    val statistic = mViewModel.readAll().observeAsState(listOf()).value
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -75,7 +75,7 @@ fun FuncMainScreen(persons: List<Person>, navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             CircularProgressBar(!IS_FINISH)
         }
     }
@@ -125,4 +125,14 @@ fun RowScope.AddItem(
             }
         }
     )
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Composable
+fun PersonInformation(persons: List<Person>) {
+    LazyColumn {
+        items(persons) { person ->
+            PersonCard(person = person)
+        }
+    }
 }
