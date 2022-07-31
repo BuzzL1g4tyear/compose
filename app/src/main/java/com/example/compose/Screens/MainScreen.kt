@@ -1,16 +1,18 @@
 package com.example.compose.Screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -30,13 +32,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
+fun MainScreen(navController: NavController, mViewModelPerson: PersonViewModel) {
 
     var coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    val persons = mViewModel.readAll().observeAsState(listOf()).value
-    val statistic = mViewModel.readAll().observeAsState(listOf()).value
+    val persons = mViewModelPerson.readAllPersons().observeAsState(listOf()).value
+    val statistic = mViewModelPerson.readAllStat().observeAsState(listOf()).value
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -45,7 +47,7 @@ fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
                 title = { Text(text = MAIN_ACT.getString(R.string.main_scr)) },
                 actions = {
                     IconButton(onClick = {
-                        mViewModel.singOut {
+                        mViewModelPerson.singOut {
                             navController.navigate(Screen.AuthScreen.route)
                         }
                     }) {
@@ -58,6 +60,14 @@ fun MainScreen(navController: NavController, mViewModel: PersonViewModel) {
             BottomBar(navController = navController)
         }
     ) {
+        for (person in persons) {
+            for (stat in statistic) {
+                if (person.Name == stat.PersonName) {
+                    person.AmountOfDeals = stat.AmountOfDeals
+                    person.AmountItemsInDeal = stat.AmountItemsInDeal
+                }
+            }
+        }
         FuncMainScreen(
             persons = persons,
             navController = navController

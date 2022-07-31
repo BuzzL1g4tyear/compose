@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.R
 import com.example.compose.model.Person
+import com.example.compose.utils.MAIN_ACT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -47,7 +49,10 @@ fun PersonCard(
                 fontSize = 18.sp
             )
             Text(
-                text = "2",
+                text =
+                if (person.AmountItemsInDeal != "" && person.AmountOfDeals != "") {
+                    "${person.AmountItemsInDeal.toFloat() / person.AmountOfDeals.toFloat()}"
+                } else MAIN_ACT.getString(R.string.no_data),
                 modifier = Modifier
                     .fillMaxWidth(0.85f)
                     .wrapContentWidth(Alignment.CenterHorizontally),

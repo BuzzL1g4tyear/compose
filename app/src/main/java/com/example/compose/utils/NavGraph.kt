@@ -36,7 +36,7 @@ fun SetupNavGraph(
         ) {
             MainScreen(
                 navController = navController,
-                mViewModel = mViewModel
+                mViewModelPerson = mViewModel
             )
         }
         composable(

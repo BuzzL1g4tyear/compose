@@ -54,6 +54,7 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
         ) {
             OutlinedTextField(
                 value = emailAuth,
+                singleLine = true,
                 onValueChange = {
                     emailAuth = it
                 },
@@ -63,6 +64,7 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
             )
             OutlinedTextField(
                 value = pasAuth,
+                singleLine = true,
                 onValueChange = {
                     pasAuth = it
                 },

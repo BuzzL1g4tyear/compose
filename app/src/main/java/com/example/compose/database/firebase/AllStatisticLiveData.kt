@@ -11,7 +11,7 @@ import com.google.firebase.database.ValueEventListener
 
 class AllStatisticLiveData : LiveData<List<Person>>() {
 
-    val REF_STATISTIC = REF_DATABASE.child(NODE_STATISTIC).child(EMPLOYEE.Name)
+    val REF_STATISTIC = REF_DATABASE.child(NODE_STATISTIC).child(EMPLOYEE.Shop).child(EMPLOYEE.Name)
 
     private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {

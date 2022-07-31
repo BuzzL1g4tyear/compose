@@ -95,6 +95,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email
                 ),
+                singleLine = true,
                 value = emailEmployee,
                 onValueChange = {
                     emailEmployee = it
@@ -123,6 +124,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone
                 ),
+                singleLine = true,
                 value = phoneEmployee,
                 onValueChange = {
                     phoneEmployee = it
@@ -157,6 +159,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text
                 ),
+                singleLine = true,
                 value = nameEmployee,
                 onValueChange = {
                     nameEmployee = it
@@ -185,6 +188,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text
                 ),
+                singleLine = true,
                 value = shopEmployee,
                 onValueChange = {
                     shopEmployee = it
@@ -213,6 +217,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password
                 ),
+                singleLine = true,
                 value = passwordEmployee,
                 onValueChange = {
                     passwordEmployee = it

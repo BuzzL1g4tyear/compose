@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 
 class PersonViewModel(application: Application) : AndroidViewModel(application) {
 
-    fun readAll() = REPO.readAllPerson
+    fun readAllPersons() = REPO.readAllPerson
+    fun readAllStat() = REPO.readAllStatistics
 
     fun initDB(onSuccess: () -> Unit) {
         REPO = FirebaseRepoPerson()
