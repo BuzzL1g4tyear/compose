@@ -1,0 +1,1 @@
+E:\PRJ\compose\buildSrc\build\classes\kotlin\main\Dependencies$Compose.class;E:\PRJ\compose\buildSrc\build\classes\kotlin\main\Dependencies.class
