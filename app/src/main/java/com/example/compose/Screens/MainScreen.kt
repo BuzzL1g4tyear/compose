@@ -9,10 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -25,19 +23,23 @@ import com.example.compose.compose.CircularProgressBar
 import com.example.compose.compose.PersonCard
 import com.example.compose.model.Person
 import com.example.compose.model.PersonViewModel
+import com.example.compose.utils.EMPLOYEE
 import com.example.compose.utils.IS_FINISH
 import com.example.compose.utils.MAIN_ACT
-import com.example.compose.utils.isAuthPerson
+import com.example.compose.utils.initUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun MainScreen(navController: NavController, mViewModelPerson: PersonViewModel) {
 
+    initUser { }
+
     var coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     val persons = mViewModelPerson.readAllPersons().observeAsState(listOf()).value
+    val personsSort by remember { mutableStateOf(listOf<Person>()) }
     val statistic = mViewModelPerson.readAllStat().observeAsState(listOf()).value
 
     Scaffold(
@@ -48,7 +50,7 @@ fun MainScreen(navController: NavController, mViewModelPerson: PersonViewModel) 
                 actions = {
                     IconButton(onClick = {
                         mViewModelPerson.singOut {
-                            navController.navigate(Screen.AuthScreen.route)
+                            navController.popBackStack(Screen.AuthScreen.route, false)
                         }
                     }) {
                         Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
@@ -79,14 +81,13 @@ fun MainScreen(navController: NavController, mViewModelPerson: PersonViewModel) 
 fun FuncMainScreen(persons: List<Person>, navController: NavController) {
 
     Column {
-        isAuthPerson { }
         PersonInformation(persons = persons)
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularProgressBar(!IS_FINISH)
+            CircularProgressBar(IS_FINISH)
         }
     }
 }
@@ -142,7 +143,15 @@ fun RowScope.AddItem(
 fun PersonInformation(persons: List<Person>) {
     LazyColumn {
         items(persons) { person ->
-            PersonCard(person = person)
+            if (EMPLOYEE.Status == "Продавец" && EMPLOYEE.Department == person.Department) {
+                PersonCard(person = person)
+            } else if (EMPLOYEE.Status == "Администратор" &&
+                EMPLOYEE.Department == person.Department
+            ) {
+                PersonCard(person = person)
+            } else if (EMPLOYEE.Status == "Заведующий") {
+                PersonCard(person = person)
+            }
         }
     }
 }

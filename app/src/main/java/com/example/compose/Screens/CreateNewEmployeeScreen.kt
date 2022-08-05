@@ -29,7 +29,6 @@ import com.example.compose.utils.mobileNumberFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-// TODO раздать права
 val depItems = listOf(
     "IT AV",
     "MM",

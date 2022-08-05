@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.compose.R
 import com.example.compose.compose.SelectableItem
@@ -64,7 +65,7 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = { Text(text = MAIN_ACT.getString(R.string.add_new_phone_scr)) },
+                title = { Text(text = stringResource(id = R.string.add_new_phone_scr)) },
                 navigationIcon = {
                     IconButton(onClick = {
                         onBackPressedDispatcher?.onBackPressed()

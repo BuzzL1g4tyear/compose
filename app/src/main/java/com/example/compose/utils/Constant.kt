@@ -13,7 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 var LIST_CONTACTS = mutableListOf<Person>()
 var PERMISSION: Boolean = false
 var EXIST: Boolean = false
-var IS_FINISH: Boolean = true
+var IS_FINISH: Boolean = false
 
 @OptIn(ExperimentalCoroutinesApi::class)
 lateinit var MAIN_ACT: MainActivity

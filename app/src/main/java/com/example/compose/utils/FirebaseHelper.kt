@@ -1,6 +1,5 @@
 package com.example.compose.utils
 
-import android.util.Log
 import com.example.compose.model.Person
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -39,19 +38,12 @@ inline fun initUser(crossinline function: () -> Unit) {
     REF_DATABASE.child(NODE_SHOP).child(UID)
         .addListenerForSingleValueEvent(AppValueEventListener {
             EMPLOYEE = it.getValue(Person::class.java) ?: Person()
+
+            REF_DATABASE.child(NODE_USER).child(EMPLOYEE.Shop).child(EMPLOYEE.id)
+                .addListenerForSingleValueEvent(AppValueEventListener { user ->
+                    EMPLOYEE = user.getValue(Person::class.java) ?: Person()
+                })
+
             function()
         })
-}
-
-fun isAuthPerson(onSuccess: () -> Unit) {
-    if (AUTH.currentUser != null) {
-        initUser {
-            Log.d("MyTag", "isAuthPerson: true")
-            onSuccess()
-        }
-    } else if (AUTH.currentUser == null) {
-        Log.d("MyTag", "isAuthPerson: false")
-    } else {
-        Log.d("MyTag", "isAuthPerson: something happen")
-    }
 }

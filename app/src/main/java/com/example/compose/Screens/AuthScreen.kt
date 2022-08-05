@@ -15,10 +15,7 @@ import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
-import com.example.compose.utils.AUTH
-import com.example.compose.utils.MAIN_ACT
-import com.example.compose.utils.UID
-import com.example.compose.utils.isAuthPerson
+import com.example.compose.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -93,8 +90,8 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
                             emailAuth,
                             pasAuth
                         ).addOnSuccessListener {
-                            isAuthPerson {
-                                UID = AUTH.currentUser?.uid.toString()
+                            UID = AUTH.currentUser?.uid.toString()
+                            initUser {
                                 navController.navigate(route = Screen.MainScreen.route)
                             }
                         }.addOnFailureListener {
