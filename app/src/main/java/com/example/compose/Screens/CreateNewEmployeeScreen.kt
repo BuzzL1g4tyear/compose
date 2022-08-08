@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -72,7 +73,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = { Text(text = MAIN_ACT.getString(R.string.registration_scr)) },
+                title = { Text(text = stringResource(id = (R.string.registration_scr))) },
                 navigationIcon = {
                     IconButton(onClick = {
                         onBackPressedDispatcher?.onBackPressed()
@@ -82,7 +83,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 }
             )
         }
-    ) {
+    ) { contentPadding ->
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,13 +104,13 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                             phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.email))
+                    Text(stringResource(id = R.string.email))
                 },
 
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = MAIN_ACT.getString(R.string.cancel_description),
+                        contentDescription = stringResource(id = R.string.cancel_description),
                         modifier = Modifier
                             .clickable {
                                 emailEmployee = ""
@@ -132,7 +133,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                             phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.phone))
+                    Text(stringResource(id = R.string.phone))
                 },
                 visualTransformation = { mobileNumberFilter(it) },
                 leadingIcon = {
@@ -144,7 +145,7 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = MAIN_ACT.getString(R.string.cancel_description),
+                        contentDescription = stringResource(id = R.string.cancel_description),
                         modifier = Modifier
                             .clickable {
                                 phoneEmployee = ""
@@ -167,13 +168,13 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                             phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.name))
+                    Text(stringResource(id = R.string.name))
                 },
 
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = MAIN_ACT.getString(R.string.cancel_description),
+                        contentDescription = stringResource(id = R.string.cancel_description),
                         modifier = Modifier
                             .clickable {
                                 nameEmployee = ""
@@ -196,13 +197,13 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                             phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.name))
+                    Text(stringResource(id = R.string.name))
                 },
 
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = MAIN_ACT.getString(R.string.cancel_description),
+                        contentDescription = stringResource(id = R.string.cancel_description),
                         modifier = Modifier
                             .clickable {
                                 shopEmployee = ""
@@ -225,13 +226,13 @@ fun CreateNewEmployeeScreen(navController: NavController, mViewModel: PersonView
                             phoneEmployee.isNotEmpty() && passwordEmployee.isNotEmpty()
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.password))
+                    Text(stringResource(id = R.string.password))
                 },
 
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = MAIN_ACT.getString(R.string.cancel_description),
+                        contentDescription = stringResource(id = R.string.cancel_description),
                         modifier = Modifier
                             .clickable {
                                 passwordEmployee = ""

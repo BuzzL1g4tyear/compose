@@ -1,13 +1,19 @@
 plugins {
     id("com.android.application")
-    kotlin("plugin.serialization") version "1.5.30"
     kotlin("android")
     kotlin("kapt")
+    kotlin("plugin.serialization") version "1.7.10"
+    id("com.google.gms.google-services") version "4.3.13"
+}
+repositories {
+    google()
+    mavenCentral()
 }
 android {
     compileSdk = 32
 
     defaultConfig {
+
         applicationId = "com.example.compose"
         minSdk = 24
         targetSdk = 32
@@ -22,26 +28,38 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
+    buildFeatures {
+        compose = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs =
+            listOf("-Xjvm-default=enable")
+
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.Compose.version
+        kotlinCompilerExtensionVersion = Dependencies.kotlinCompilerExtensionVersion
     }
+
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -49,28 +67,38 @@ android {
     }
 }
 
-
 dependencies {
 
-    implementation("com.google.firebase:firebase-auth-ktx:21.0.7")
-    implementation("com.google.firebase:firebase-database-ktx:20.0.5")
+    implementation(Dependencies.Firebase.firebaseBom)
+    implementation(Dependencies.Firebase.firebaseAuth)
+    implementation(Dependencies.Firebase.firebaseDatabase)
 
-    implementation(Dependencies.Compose.livedata)
-    implementation("com.google.dagger:hilt-android:2.41")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation(Dependencies.Compose.navigation)
+    implementation(Dependencies.Livedata.livedata)
+    implementation(Dependencies.Livedata.lifecycle)
+
+    implementation(Dependencies.Hilt.daggerHilt)
+
+    implementation(Dependencies.Coroutines.coroutinesCore)
+    implementation(Dependencies.Coroutines.coroutinesAndroid)
+    implementation(Dependencies.Coroutines.coroutinesServ)
+
+    implementation(Dependencies.Android.coreKtx)
+    implementation(Dependencies.Android.appCompat)
+    implementation(Dependencies.Android.material)
+
+    implementation(Dependencies.Navigation.navigation)
+
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.prev)
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("com.google.firebase:firebase-database:20.0.5")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
-//    debugImplementation("androidx.compose.ui:ui-tooling:$compose_version")
+    implementation(Dependencies.Compose.activityComp)
+
+    implementation(Dependencies.Lifecycle.lifecycle)
+    implementation(Dependencies.Lifecycle.viewModel)
+
+    testImplementation(Dependencies.Test.jUnit)
+    androidTestImplementation(Dependencies.Test.androidJUnit)
+    androidTestImplementation(Dependencies.Test.espresso)
+    androidTestImplementation(Dependencies.Compose.uiTest)
+    debugImplementation(Dependencies.Compose.toolingTest)
 }

@@ -75,9 +75,9 @@ fun AddNewPhone(mViewModel: PersonViewModel) {
                 }
             )
         }
-    ) {
+    ) {contentPadding ->
         Box(
-//            modifier =
+            modifier = Modifier.padding(1.dp)
         ) {
             val listState = rememberLazyListState()
             LazyColumn(

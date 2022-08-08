@@ -1,5 +1,6 @@
 package com.example.compose.Screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -10,12 +11,16 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.R
 import com.example.compose.model.PersonViewModel
 import com.example.compose.ui.theme.Amber
-import com.example.compose.utils.*
+import com.example.compose.utils.AUTH
+import com.example.compose.utils.MAIN_ACT
+import com.example.compose.utils.UID
+import com.example.compose.utils.initUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -38,10 +43,10 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = { Text(text = MAIN_ACT.getString(R.string.auth_scr)) }
+                title = { Text(text = stringResource(R.string.auth_scr)) }
             )
         }
-    ) {
+    ) { contentPadding ->
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -56,7 +61,7 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
                     emailAuth = it
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.email))
+                    Text(text = stringResource(id = (R.string.email)))
                 }
             )
             OutlinedTextField(
@@ -66,11 +71,11 @@ fun AuthScreen(navController: NavController, mViewModel: PersonViewModel) {
                     pasAuth = it
                 },
                 label = {
-                    Text(MAIN_ACT.getString(R.string.password))
+                    Text(text = stringResource(id = (R.string.password)))
                 }
             )
             Text(
-                text = MAIN_ACT.getString(R.string.no_account_yet),
+                text = stringResource(id = (R.string.no_account_yet)),
                 Modifier.clickable {
                     navController.navigate(
                         route = Screen.CreateNewEmployeeScreen.route

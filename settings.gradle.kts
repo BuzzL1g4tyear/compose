@@ -1,7 +1,6 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenCentral()
         google()
         mavenCentral()
     }
@@ -14,10 +13,11 @@ pluginManagement {
                 useVersion("1.5.31")
             }
             if (requested.id.id.startsWith("dagger.hilt.android")) {
-                useModule("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
+                useModule("com.google.dagger:hilt-android-gradle-plugin:2.41")
             }
         }
     }
 }
-rootProject.name = "JetpackComposeDemo"
+
+rootProject.name = "compose"
 include(":app")

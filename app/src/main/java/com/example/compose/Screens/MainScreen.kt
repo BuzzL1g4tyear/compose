@@ -61,7 +61,7 @@ fun MainScreen(navController: NavController, mViewModelPerson: PersonViewModel) 
         bottomBar = {
             BottomBar(navController = navController)
         }
-    ) {
+    ) { contentPadding ->
         for (person in persons) {
             for (stat in statistic) {
                 if (person.Name == stat.PersonName) {
